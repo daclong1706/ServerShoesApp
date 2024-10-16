@@ -4,6 +4,7 @@ const asyncHandle = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 
 const getJsonWebToken = async (email, id) => {
+  console.log(email, id);
   const payload = {
     email,
     id,
@@ -41,7 +42,8 @@ const register = asyncHandle(async (req, res) => {
   res.status(200).json({
     mess: "Register new user successfully",
     data: {
-      ...newUser,
+      email: newUser.email,
+      id: newUser.id,
       accessToken: await getJsonWebToken(email, newUser.id),
     },
   });
