@@ -25,5 +25,21 @@ app.listen(PORT, (err) => {
     console.log(err);
     return;
   }
-  console.log(`Server starting at http://192.168.1.175:${PORT}`);
+  const ipAddress = getLocalIpAddress();
+  console.log(`Server starting at http://${ipAddress}:${PORT}`);
 });
+
+const os = require("os");
+
+const getLocalIpAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const interfaceName in interfaces) {
+    const iface = interfaces[interfaceName];
+    for (const alias of iface) {
+      if (alias.family === "IPv4" && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return "localhost";
+};
