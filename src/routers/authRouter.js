@@ -6,7 +6,7 @@ const {
   forgotPassword,
   resetPassword,
   loginWithGoogle,
-} = require("../../controllers/auth.controller");
+} = require("../../controllers/authController");
 
 const authRouter = Router();
 

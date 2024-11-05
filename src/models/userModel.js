@@ -16,19 +16,50 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
       unique: true,
       trim: true,
       lowercase: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
     },
     photo: {
       type: String,
       trim: true,
     },
+    cart: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product", // assuming you have a Product model
+        },
+        quantity: {
+          type: Number,
+
+          default: 1,
+          min: 1, // Ensures quantity can't be less than 1
+        },
+        selectedColor: {
+          type: String,
+          trim: true,
+        },
+        selectedSize: {
+          type: String,
+          trim: true,
+        },
+      },
+    ],
+    favorites: [
+      {
+        productId: {
+          type: String, // Sử dụng String thay vì ObjectId
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
