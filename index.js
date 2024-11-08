@@ -5,6 +5,8 @@ const cors = require("cors");
 const authRouter = require("./src/routers/authRouter");
 const shoesRouter = require("./src/routers/shoesRouter"); // Import shoesRouter
 const favoritesRouter = require("./src/routers/favoritesRouter");
+const cartRouter = require("./src/routers/cartRouter");
+const userRouter = require("./src/routers/userRouter");
 const connectDB = require("./src/configs/connectDb");
 const errorMiddleHandle = require("./middlewares/errorMiddleware");
 require("dotenv").config();
@@ -22,9 +24,11 @@ connectDB();
 const PORT = process.env.PORT || 3001;
 
 // Đăng ký các router cho ứng dụng
-app.use("/auth", authRouter); // Router cho xác thực người dùng
-app.use("/product", shoesRouter); // Router cho quản lý giày dép
+app.use("/auth", authRouter);
+app.use("/product", shoesRouter);
 app.use("/favorites", favoritesRouter);
+app.use("/cart", cartRouter);
+app.use("/user", userRouter);
 
 // Middleware xử lý lỗi
 app.use(errorMiddleHandle);

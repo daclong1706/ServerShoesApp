@@ -46,12 +46,16 @@ const getShoes = asyncHandler(async (req, res) => {
 
 // Lấy sản phẩm giày theo productId
 const getShoeById = asyncHandler(async (req, res) => {
-  const shoe = await Shoes.findOne({ productId: req.params.productId }).lean();
-  if (!shoe) {
+  const shoes = await Shoes.findOne({ productId: req.params.productId }).lean();
+  if (!shoes) {
     res.status(404);
     throw new Error("Shoe not found");
   }
-  res.status(200).json(shoe);
+  res.status(200).json({
+    data: {
+      shoes,
+    },
+  });
 });
 
 // Cập nhật sản phẩm giày

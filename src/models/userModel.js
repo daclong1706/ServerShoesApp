@@ -30,14 +30,12 @@ const UserSchema = new mongoose.Schema(
     cart: [
       {
         productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product", // assuming you have a Product model
+          type: String, // Sử dụng String thay vì ObjectId
         },
         quantity: {
           type: Number,
-
           default: 1,
-          min: 1, // Ensures quantity can't be less than 1
+          min: 1, // Đảm bảo số lượng không ít hơn 1
         },
         selectedColor: {
           type: String,
@@ -46,6 +44,10 @@ const UserSchema = new mongoose.Schema(
         selectedSize: {
           type: String,
           trim: true,
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now, // Thời gian thêm vào giỏ hàng
         },
       },
     ],
