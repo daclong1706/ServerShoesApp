@@ -7,6 +7,9 @@ const shoesRouter = require("./src/routers/shoesRouter"); // Import shoesRouter
 const favoritesRouter = require("./src/routers/favoritesRouter");
 const cartRouter = require("./src/routers/cartRouter");
 const userRouter = require("./src/routers/userRouter");
+const paypalRouter = require("./src/routers/paypalRouter");
+const stripeRouter = require("./src/routers/stripeRouter");
+const ordersRouter = require("./src/routers/orderRouter");
 const connectDB = require("./src/configs/connectDb");
 const errorMiddleHandle = require("./middlewares/errorMiddleware");
 require("dotenv").config();
@@ -29,6 +32,9 @@ app.use("/product", shoesRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/cart", cartRouter);
 app.use("/user", userRouter);
+app.use("/paypal", paypalRouter);
+app.use("/stripe", stripeRouter);
+app.use("/orders", ordersRouter);
 
 // Middleware xử lý lỗi
 app.use(errorMiddleHandle);

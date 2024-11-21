@@ -61,7 +61,7 @@ const verification = asyncHandle(async (req, res) => {
 
 // Register
 const register = asyncHandle(async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, username, password } = req.body;
 
   const existingUser = await UserModel.findOne({ email });
   if (existingUser) {
@@ -72,7 +72,7 @@ const register = asyncHandle(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await UserModel.create({
     email,
-    name: name || "",
+    name: username || "",
     password: hashedPassword,
   });
 
@@ -82,6 +82,8 @@ const register = asyncHandle(async (req, res) => {
       email: newUser.email,
       id: newUser._id,
       accesstoken: getJsonWebToken(email, newUser._id),
+      photo: existingUser.photo,
+      name: existingUser.name,
     },
   });
 });
@@ -108,6 +110,8 @@ const login = asyncHandle(async (req, res) => {
       id: existingUser._id,
       email: existingUser.email,
       accesstoken: getJsonWebToken(email, existingUser._id),
+      photo: existingUser.photo,
+      name: existingUser.name,
     },
   });
 });
@@ -158,7 +162,6 @@ const resetPassword = asyncHandle(async (req, res) => {
 // Login with Google
 const loginWithGoogle = asyncHandle(async (req, res) => {
   const user = req.body;
-
   const existingUser = await UserModel.findOneAndUpdate(
     { email: user.email },
     { ...user, updatedAt: Date.now() },

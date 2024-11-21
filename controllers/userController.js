@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const user = await UserModel.findById(userId).select("-password");
-  console.log("hello");
 
   if (!user) {
     return res.status(404).json({ message: "User not found." });
@@ -21,8 +20,9 @@ const getUser = asyncHandler(async (req, res) => {
 // Cập nhật thông tin người dùng
 const updateUser = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-  const { name, email, phone, address } = req.body;
-
+  const { name, email, phoneNumber, address, gender, birthDate, photo } =
+    req.body;
+  console.log(req.body);
   const user = await UserModel.findById(userId);
   if (!user) {
     return res.status(404).json({ message: "User not found." });
@@ -31,15 +31,30 @@ const updateUser = asyncHandler(async (req, res) => {
   // Cập nhật các trường thông tin nếu có
   user.name = name || user.name;
   user.email = email || user.email;
-  user.phone = phone || user.phone;
+  user.phoneNumber = phoneNumber || user.phoneNumber;
   user.address = address || user.address;
+  user.birthDate = birthDate || user.birthDate;
+  user.photo = photo || user.photo;
 
-  await user.save({ validateModifiedOnly: true });
+  if (["male", "female", "other"].includes(gender)) {
+    user.gender = gender;
+  }
 
-  return res.status(200).json({
-    message: "User information updated successfully.",
-    data: { user },
-  });
+  user.photo = photo || user.photo;
+
+  try {
+    await user.save();
+    return res.status(200).json({
+      message: "User information updated successfully.",
+      data: { user },
+    });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    return res.status(500).json({
+      message: "Failed to update user information.",
+      error: error.message,
+    });
+  }
 });
 
 // Xóa tài khoản người dùng
@@ -92,7 +107,7 @@ const updatePassword = asyncHandler(async (req, res) => {
   // Băm mật khẩu mới trước khi lưu
   user.password = await bcrypt.hash(newPassword, 10);
   await user.save();
-
+  console.log("Password updated successfully.");
   return res.status(200).json({ message: "Password updated successfully." });
 });
 
