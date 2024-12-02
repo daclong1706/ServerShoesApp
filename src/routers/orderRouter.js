@@ -2,23 +2,23 @@ const Router = require("express");
 const {
   getOrders,
   createOrder,
-  getOrderById,
   updateOrderStatus,
+  cancelOrder,
+  getOrderDetails, // Thêm import cho hàm lấy chi tiết đơn hàng
 } = require("../../controllers/orderController");
 const { protect } = require("../../middlewares/authMiddleware");
 
-const ordersRouter = Router();
+const orderRouter = Router();
 
-// Route cho tất cả các đơn hàng
-ordersRouter
+orderRouter
   .route("/")
   .get(protect, getOrders) // GET - Lấy danh sách đơn hàng của người dùng
-  .post(protect, createOrder); // POST - Tạo đơn hàng mới từ giỏ hàng
+  .post(protect, createOrder); // POST - Tạo đơn hàng mới
 
-// Route cho một đơn hàng cụ thể
-ordersRouter
+orderRouter
   .route("/:orderId")
-  .get(protect, getOrderById) // GET - Lấy thông tin chi tiết đơn hàng
-  .patch(protect, updateOrderStatus); // PATCH - Cập nhật trạng thái đơn hàng
+  .get(protect, getOrderDetails) // GET - Lấy chi tiết đơn hàng
+  .patch(protect, updateOrderStatus) // PATCH - Cập nhật trạng thái đơn hàng
+  .delete(protect, cancelOrder); // DELETE - Hủy đơn hàng
 
-module.exports = ordersRouter;
+module.exports = orderRouter;
