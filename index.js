@@ -10,6 +10,7 @@ const userRouter = require("./src/routers/userRouter");
 const paypalRouter = require("./src/routers/paypalRouter");
 const stripeRouter = require("./src/routers/stripeRouter");
 const ordersRouter = require("./src/routers/orderRouter");
+const addressRouter = require("./src/routers/addressRouter");
 const connectDB = require("./src/configs/connectDb");
 const errorMiddleHandle = require("./middlewares/errorMiddleware");
 require("dotenv").config();
@@ -35,6 +36,7 @@ app.use("/user", userRouter);
 app.use("/paypal", paypalRouter);
 app.use("/stripe", stripeRouter);
 app.use("/orders", ordersRouter);
+app.use("/address", addressRouter);
 
 // Middleware xử lý lỗi
 app.use(errorMiddleHandle);

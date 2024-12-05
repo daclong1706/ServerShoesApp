@@ -93,27 +93,24 @@ const login = asyncHandle(async (req, res) => {
   const { email, password } = req.body;
 
   const existingUser = await UserModel.findOne({ email });
-  if (!existingUser) {
-    res.status(403);
-    throw new Error("User not found. Please register first.");
-  }
+  const isMatchPassword = existingUser
+    ? await bcrypt.compare(password, existingUser.password)
+    : false;
 
-  const isMatchPassword = await bcrypt.compare(password, existingUser.password);
-  if (!isMatchPassword) {
-    res.status(401);
-    throw new Error("Incorrect email or password.");
+  if (existingUser && isMatchPassword) {
+    res.status(200).json({
+      message: "Login successfully.",
+      data: {
+        id: existingUser._id,
+        email: existingUser.email,
+        accesstoken: getJsonWebToken(email, existingUser._id),
+        photo: existingUser.photo,
+        name: existingUser.name,
+      },
+    });
+  } else {
+    res.status(400).json({ message: "Invalid email or password." });
   }
-
-  res.status(200).json({
-    message: "Login successfully.",
-    data: {
-      id: existingUser._id,
-      email: existingUser.email,
-      accesstoken: getJsonWebToken(email, existingUser._id),
-      photo: existingUser.photo,
-      name: existingUser.name,
-    },
-  });
 });
 
 // Forgot Password

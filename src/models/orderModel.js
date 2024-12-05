@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const OrderItemSchema = new mongoose.Schema({
   productId: {
@@ -36,11 +37,11 @@ const OrderSchema = new mongoose.Schema({
       required: true,
     },
     price: { type: Number, required: true },
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String },
+    street: { type: String },
+    county: { type: String },
+    city: { type: String },
     postalCode: { type: String },
-    country: { type: String, required: true },
+    country: { type: String },
   }, // Địa chỉ giao hàng
   paymentDetails: {
     method: {

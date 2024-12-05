@@ -45,12 +45,29 @@ const getShoes = asyncHandler(async (req, res) => {
 });
 
 // Lấy sản phẩm giày theo productId
+// const getShoeById = asyncHandler(async (req, res) => {
+//   const shoes = await Shoes.findOne({ productId: req.params.productId }).lean();
+//   if (!shoes) {
+//     res.status(404);
+//     throw new Error("Shoe not found");
+//   }
+//   res.status(200).json({
+//     data: {
+//       shoes,
+//     },
+//   });
+// });
+
 const getShoeById = asyncHandler(async (req, res) => {
   const shoes = await Shoes.findOne({ productId: req.params.productId }).lean();
+
+  // Nếu không tìm thấy sản phẩm, trả về phản hồi thành công với dữ liệu rỗng
   if (!shoes) {
-    res.status(404);
-    throw new Error("Shoe not found");
+    return res.status(200).json({
+      data: null, // Trả về null hoặc {} nếu không có sản phẩm
+    });
   }
+
   res.status(200).json({
     data: {
       shoes,

@@ -1,11 +1,22 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const AddressSchema = new mongoose.Schema({
-  street: { type: String, trim: true },
-  city: { type: String, trim: true },
-  state: { type: String, trim: true },
-  postalCode: { type: String, trim: true },
-  country: { type: String, trim: true },
+  name: { type: String, required: true, trim: true }, // Tên người nhận
+  phone: { type: String, required: true, trim: true }, // Số điện thoại
+  address: {
+    type: String,
+    required: true,
+    trim: true,
+  }, // Địa chỉ (gồm xã, phường, quận, huyện, tỉnh, thành phố)
+  street: {
+    type: String,
+    trim: true,
+  }, // Tên đường (có thể không có)
+  isDefault: {
+    type: Boolean,
+    default: false,
+  }, // Đặt làm địa chỉ mặc định hay không
 });
 
 const UserSchema = new mongoose.Schema(
@@ -71,6 +82,11 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Sửa lại tên schema để phù hợp với tên đã khai báo
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 const UserModel = mongoose.model("User", UserSchema);
 module.exports = UserModel;

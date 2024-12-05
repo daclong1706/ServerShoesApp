@@ -95,20 +95,25 @@ const updatePassword = asyncHandler(async (req, res) => {
 
   const user = await UserModel.findById(userId);
   if (!user) {
-    return res.status(404).json({ message: "User not found." });
+    return res.status(404).json({ data: { message: "User not found." } });
   }
 
   // Kiểm tra mật khẩu hiện tại
   const isMatch = await user.matchPassword(currentPassword);
   if (!isMatch) {
-    return res.status(400).json({ message: "Current password is incorrect." });
+    return res
+      .status(400)
+      .json({ data: { message: "Current password is incorrect." } });
   }
 
   // Băm mật khẩu mới trước khi lưu
   user.password = await bcrypt.hash(newPassword, 10);
+
   await user.save();
-  console.log("Password updated successfully.");
-  return res.status(200).json({ message: "Password updated successfully." });
+
+  return res
+    .status(200)
+    .json({ data: { message: "Password updated successfully." } });
 });
 
 module.exports = {
