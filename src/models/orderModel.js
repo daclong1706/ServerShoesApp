@@ -37,11 +37,14 @@ const OrderSchema = new mongoose.Schema({
       required: true,
     },
     price: { type: Number, required: true },
+    name: { type: String },
+    phone: { type: String },
     street: { type: String },
-    county: { type: String },
-    city: { type: String },
-    postalCode: { type: String },
-    country: { type: String },
+    address: { type: String },
+    // county: { type: String },
+    // city: { type: String },
+    // postalCode: { type: String },
+    // country: { type: String },
   }, // Địa chỉ giao hàng
   paymentDetails: {
     method: {

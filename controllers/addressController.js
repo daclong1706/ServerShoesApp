@@ -14,7 +14,7 @@ const getAddresses = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("No addresses found for this user.");
   }
-
+  console.log(addresses[0].addresses);
   res.status(200).json({
     message: "Addresses retrieved successfully.",
     data: {
